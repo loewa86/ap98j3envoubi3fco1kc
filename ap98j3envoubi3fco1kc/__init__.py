@@ -290,10 +290,10 @@ async def scrap_post(url: str) -> AsyncGenerator[Item, None]:
             domain=Domain("reddit.com"),
             url=Url("https://reddit.com" + content["permalink"]),
         )
-        # if is_within_timeframe_seconds(
-        #    content["created_utc"], MAX_EXPIRATION_SECONDS
-        # ):
-        yield item_
+        if is_within_timeframe_seconds(
+            content["created_utc"], MAX_EXPIRATION_SECONDS
+        ):
+            yield item_
 
     async def more(__data__):
         for __item__ in []:
@@ -316,28 +316,23 @@ async def scrap_post(url: str) -> AsyncGenerator[Item, None]:
             async for item in kind(item_data):
                 yield item
 
-    logging.info("Welcome to scrap_post")
     resolvers = {"Listing": listing, "t1": comment, "t3": post, "more": more}
     async with aiohttp.ClientSession() as session:
         _url = url + ".json"
         logging.info(f"getting {_url}")
         async with session.get(_url) as response:
             response = await response.json()
-            [post, comments] = response
+            [_post, comments] = response
             try:
-                for result in comments["data"]["children"]:
-                    async for item in kind(result):
-                        yield (item)
+                async for item in kind(_post):
+                    yield (item)
             except:
                 logging.exception(f"An error occured on {_url}")
 
             try:
-                logging.info(" - got a comment")
-
-                async for commentary in kind(comments["data"]["children"]):
-                    logging.info("in comment")
-                    await asyncio.sleep(1)
-                    yield commentary
+                for result in comments["data"]["children"]:
+                    async for item in kind(result):
+                        yield (item)
             except:
                 logging.exception(f"An error occured on {_url}")
 
@@ -361,7 +356,7 @@ async def scrap_subreddit(subreddit_url: str) -> AsyncGenerator[Item, None]:
                         pass
 
 
-DEFAULT_OLDNESS_SECONDS = 30
+DEFAULT_OLDNESS_SECONDS = 6000
 DEFAULT_MAXIMUM_ITEMS = 15
 DEFAULT_MIN_POST_LENGTH = 10
 
@@ -407,15 +402,16 @@ async def query(parameters: dict) -> AsyncGenerator[Item, None]:
     ) = read_parameters(parameters)
     MAX_EXPIRATION_SECONDS = max_oldness_seconds
     url = await generate_url(**parameters["url_parameters"])
+    url = "https://old.reddit.com/r/CryptoCurrency/new"
     logging.info("[Reddit] Scraping %s", url)
     if "reddit.com" not in url:
         raise ValueError(f"Not a Reddit URL {url}")
     url_parameters = url.split("reddit.com")[1].split("/")[1:]
     if "comments" in url_parameters:
         async for result in scrap_post(url):
-            logging.info("[Reddit] found post = %s", result)
+            print(result)
             yield result
     else:
         async for result in scrap_subreddit(url):
-            logging.info("[Reddit] found post = %s", result)
+            print(result)
             yield result
