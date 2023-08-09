@@ -1,5 +1,6 @@
 import random
 import aiohttp
+import asyncio
 from lxml import html
 from typing import AsyncGenerator
 import time
@@ -22,7 +23,7 @@ from exorde_data import (
 import hashlib
 
 global MAX_EXPIRATION_SECONDS
-MAX_EXPIRATION_SECONDS = 60
+MAX_EXPIRATION_SECONDS = 43000
 
 subreddits = [
     "r/AlgorandOfficial",
@@ -289,10 +290,10 @@ async def scrap_post(url: str) -> AsyncGenerator[Item, None]:
             domain=Domain("reddit.com"),
             url=Url("https://reddit.com" + content["permalink"]),
         )
-        if is_within_timeframe_seconds(
-            content["created_utc"], MAX_EXPIRATION_SECONDS
-        ):
-            yield item_
+        # if is_within_timeframe_seconds(
+        #    content["created_utc"], MAX_EXPIRATION_SECONDS
+        # ):
+        yield item_
 
     async def more(__data__):
         for __item__ in []:
@@ -315,17 +316,31 @@ async def scrap_post(url: str) -> AsyncGenerator[Item, None]:
             async for item in kind(item_data):
                 yield item
 
+    logging.info("Welcome to scrap_post")
     resolvers = {"Listing": listing, "t1": comment, "t3": post, "more": more}
-    try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url + ".json") as response:
-                [post, comments] = await response.json()
-                async for result in kind(post):
-                    yield result
-                async for commentary in kind(comments):
+    async with aiohttp.ClientSession() as session:
+        _url = url + ".json"
+        logging.info(f"getting {_url}")
+        async with session.get(_url) as response:
+            response = await response.json()
+            [post, comments] = response
+            try:
+                for result in comments["data"]["children"]:
+                    async for item in kind(result):
+                        yield (item)
+            except:
+                logging.exception(f"An error occured on {_url}")
+
+            try:
+                logging.info(" - got a comment")
+
+                async for commentary in kind(comments["data"]["children"]):
+                    logging.info("in comment")
+                    await asyncio.sleep(1)
                     yield commentary
-    except Exception:
-        pass
+            except:
+                logging.exception(f"An error occured on {_url}")
+
 
 async def scrap_subreddit(subreddit_url: str) -> AsyncGenerator[Item, None]:
     async with aiohttp.ClientSession() as session:
@@ -334,13 +349,16 @@ async def scrap_subreddit(subreddit_url: str) -> AsyncGenerator[Item, None]:
             html_content = await response.text()
             html_tree = fromstring(html_content)
             for post in html_tree.xpath("//div[contains(@class, 'entry')]"):
-                url = "https://reddit.com" + post.xpath("div/*/a")[0].get(
-                    "href"
-                )
-                if ".jpg" not in url:
-                    async for item in scrap_post(url):
-                        yield item
-
+                url = post.xpath("div/*/a")[0].get("href")
+                await asyncio.sleep(1)
+                if "https" not in url:
+                    try:
+                        async for item in scrap_post(
+                            f"https://reddit.com{url}"
+                        ):
+                            yield item
+                    except Exception:
+                        pass
 
 
 DEFAULT_OLDNESS_SECONDS = 30
