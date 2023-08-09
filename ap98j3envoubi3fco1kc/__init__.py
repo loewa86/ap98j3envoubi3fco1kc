@@ -23,7 +23,7 @@ from exorde_data import (
 import hashlib
 
 global MAX_EXPIRATION_SECONDS
-MAX_EXPIRATION_SECONDS = 43000
+MAX_EXPIRATION_SECONDS = 3600
 
 subreddits = [
     "r/AlgorandOfficial",
@@ -199,6 +199,52 @@ subreddits = [
     "r/worldnews",
     "r/worldnews",
     "r/worldnews",
+    ###
+    "r/BaldursGate3",
+    "r/teenagers",
+    "r/BigBrother",
+    "r/BigBrother",
+    "r/BigBrother",
+    "r/wallstreetbets",
+    "r/wallstreetbets",
+    "r/namenerds",
+    "r/Eldenring",
+    "r/Unexpected",
+    "r/NonCredibleDefense",
+    "r/wallstreetbets",
+    "r/news",
+    "r/news",
+    "r/news",
+    "r/mildlyinteresting",  
+    "r/RandomThoughts",
+    "r/ireland",
+    "r/france",
+    "r/ireland",
+    "r/de",
+    "r/ireland",
+    "r/unitedkingdom", "r/AskUK", "r/CasualUK", "r/britishproblems",
+    "r/canada", "r/AskCanada", "r/onguardforthee", "r/CanadaPolitics",
+    "r/australia", "r/AskAnAustralian", "r/straya", "r/sydney",
+    "r/india", "r/AskIndia", "r/bollywood", "r/Cricket",
+    "r/germany", "r/de", "r/LearnGerman", "r/germusic",
+    "r/france", "r/French", "r/paris", "r/europe",
+    "r/japan", "r/japanlife", "r/newsokur", "r/learnjapanese",
+    "r/brasil", "r/brasilivre", "r/riodejaneiro", "r/saopaulo",
+    "r/mexico", "r/MexicoCity", "r/spanish", "r/yo_espanol",
+    # 50 Most Popular News, Politics, and Finance/Economics Subreddits
+    "r/news", "r/worldnews", "r/UpliftingNews", "r/nottheonion", "r/TrueReddit",
+    "r/politics", "r/PoliticalDiscussion", "r/worldpolitics", "r/neutralpolitics", "r/Ask_Politics",
+    "r/personalfinance", "r/investing", "r/StockMarket", "r/financialindependence", "r/economics",
+    # 50 Simply Relevant/Popular Subreddits
+    "r/AskReddit", "r/IAmA", "r/funny", "r/pics", "r/gaming", "r/aww", "r/todayilearned",
+    "r/science", "r/technology", "r/worldnews", "r/Showerthoughts", "r/books", "r/movies",
+    "r/Music", "r/Art", "r/history", "r/EarthPorn", "r/food", "r/travel", "r/fitness", "r/DIY",
+    "r/LifeProTips", "r/explainlikeimfive", "r/dataisbeautiful", "r/futurology", "r/WritingPrompts",
+    "r/nosleep", "r/personalfinance", "r/photography", "r/NatureIsFuckingLit", "r/Advice",
+    "r/askscience", "r/gadgets", "r/funny", "r/pics", "r/gaming", "r/aww", "r/todayilearned",
+    "r/science", "r/technology", "r/worldnews", "r/Showerthoughts", "r/books", "r/movies",
+    "r/Music", "r/Art", "r/history", "r/EarthPorn", "r/food", "r/travel", "r/fitness", "r/DIY",
+    "r/LifeProTips", "r/explainlikeimfive", "r/dataisbeautiful", "r/futurology", "r/WritingPrompts"
 ]
 
 
@@ -403,15 +449,22 @@ async def query(parameters: dict) -> AsyncGenerator[Item, None]:
     MAX_EXPIRATION_SECONDS = max_oldness_seconds
     url = await generate_url(**parameters["url_parameters"])
     url = "https://old.reddit.com/r/CryptoCurrency/new"
+    yielded_items = 0  # Counter for the number of yielded items
     logging.info("[Reddit] Scraping %s", url)
     if "reddit.com" not in url:
         raise ValueError(f"Not a Reddit URL {url}")
     url_parameters = url.split("reddit.com")[1].split("/")[1:]
     if "comments" in url_parameters:
         async for result in scrap_post(url):
-            print(result)
+            logging.info(f"[REDDIT] Found Reddit post: {result}")
+            yielded_items += 1
             yield result
+            if yielded_items >= MAXIMUM_ITEMS_TO_COLLECT:
+                break
     else:
         async for result in scrap_subreddit(url):
-            print(result)
+            logging.info(f"[REDDIT] Found Reddit comment: {result}")
+            yielded_items += 1
             yield result
+            if yielded_items >= MAXIMUM_ITEMS_TO_COLLECT:
+                break
