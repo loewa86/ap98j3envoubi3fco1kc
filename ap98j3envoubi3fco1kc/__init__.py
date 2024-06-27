@@ -421,7 +421,7 @@ async def find_random_subreddit_for_keyword(keyword: str = "BTC"):
     Generate a subreddit URL using the search tool with `keyword`.
     It randomly chooses one of the resulting subreddit.
     """
-    logging.info("[Reddit] generating subreddit target URL.")
+    logging.info("[Reddit_loewa86] generating subreddit target URL.")
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(
@@ -445,14 +445,14 @@ async def find_random_subreddit_for_keyword(keyword: str = "BTC"):
 async def generate_url(autonomous_subreddit_choice=0.35, keyword: str = "BTC"):
     random_value = random.random()
     if random_value < autonomous_subreddit_choice:
-        logging.info("[Reddit] Exploration mode!")  
+        logging.info("[Reddit_loewa86] Exploration mode!")  
         return await find_random_subreddit_for_keyword(keyword)
     else:
         if random.random() < 0.5:     
-            logging.info("[Reddit] Top 225 Subreddits mode!")       
+            logging.info("[Reddit_loewa86] Top 225 Subreddits mode!")       
             selected_subreddit_ = "https://reddit.com/" + random.choice(subreddits_top_225)
         else:            
-            logging.info("[Reddit] Top 1000 Subreddits mode!")
+            logging.info("[Reddit_loewa86] Top 1000 Subreddits mode!")
             selected_subreddit_ = "https://reddit.com/" + random.choice(subreddits_top_1000)
         
         return selected_subreddit_
@@ -551,7 +551,7 @@ async def scrap_post(url: str) -> AsyncGenerator[Item, None]:
     try:
         async with aiohttp.ClientSession() as session:
             _url = url + ".json"
-            logging.info(f"[Reddit] Scraping - getting {_url}")
+            logging.info(f"[Reddit_loewa86] Scraping - getting {_url}")
             async with session.get(_url, 
                 headers={"User-Agent": random.choice(USER_AGENT_LIST)},     
                 timeout=BASE_TIMEOUT) as response:
@@ -561,7 +561,7 @@ async def scrap_post(url: str) -> AsyncGenerator[Item, None]:
                     async for item in kind(_post):
                         yield (item)
                 except GeneratorExit:
-                    logging.info("[Reddit] Scraper generator exit...")
+                    logging.info("[Reddit_loewa86] Scraper generator exit...")
                     return
                 except:
                     logging.exception(f"An error occured on {_url}")
@@ -571,7 +571,7 @@ async def scrap_post(url: str) -> AsyncGenerator[Item, None]:
                         async for item in kind(result):
                             yield (item)
                 except GeneratorExit:
-                    logging.info("[Reddit] Scraper generator exit...")
+                    logging.info("[Reddit_loewa86] Scraper generator exit...")
                     return
                 except:
                     logging.exception(f"An error occured on {_url}")
@@ -597,7 +597,7 @@ async def scrap_subreddit_new_layout(subreddit_url: str) -> AsyncGenerator[Item,
     try:
         async with aiohttp.ClientSession() as session:
             url_to_fetch = subreddit_url
-            logging.info("[Reddit] [NEW LAYOUT MODE] Opening: %s",url_to_fetch)
+            logging.info("[Reddit_loewa86] [NEW LAYOUT MODE] Opening: %s",url_to_fetch)
             async with session.get(url_to_fetch, 
                 headers={"User-Agent": random.choice(USER_AGENT_LIST)},     
                 timeout=BASE_TIMEOUT) as response:
@@ -638,7 +638,7 @@ async def scrap_subreddit_json(subreddit_url: str) -> AsyncGenerator[Item, None]
                 
             if url_to_fetch.endswith("/new/new/.json"):
                 url_to_fetch = url_to_fetch.replace("/new/new/.json", "/new.json")
-            logging.info("[Reddit] [JSON MODE] opening: %s",url_to_fetch)
+            logging.info("[Reddit_loewa86] [JSON MODE] opening: %s",url_to_fetch)
             await asyncio.sleep(1)
             async with session.get(url_to_fetch, 
                 headers={"User-Agent": random.choice(USER_AGENT_LIST)},     
@@ -658,7 +658,7 @@ async def scrap_subreddit_json(subreddit_url: str) -> AsyncGenerator[Item, None]
                             async for item in scrap_post(url):
                                 yield item
                     except Exception as e:
-                        logging.exception(f"[Reddit] [JSON MODE] Error detected")
+                        logging.exception(f"[Reddit_loewa86] [JSON MODE] Error detected")
 
     except:
         await session.close()
@@ -747,7 +747,7 @@ def post_process_item(item):
     try:
         item["url"] = correct_reddit_url(item["url"])
     except:
-        logging.warning(f"[Reddit] failed to correct the URL of item %s",item["url"])
+        logging.warning(f"[Reddit_loewa86] failed to correct the URL of item %s",item["url"])
     return item
 
 def is_valid_item(item, min_post_length):
@@ -769,7 +769,7 @@ async def query(parameters: dict) -> AsyncGenerator[Item, None]:
         new_layout_scraping_weight,
         SKIP_POST_PROBABILITY
     ) = read_parameters(parameters)
-    logging.info(f"[Reddit] Input parameters: {parameters}")
+    logging.info(f"[Reddit_loewa86] Input parameters: {parameters}")
     MAX_EXPIRATION_SECONDS = max_oldness_seconds
     yielded_items = 0  # Counter for the number of yielded items
 
@@ -781,7 +781,7 @@ async def query(parameters: dict) -> AsyncGenerator[Item, None]:
         # if url ends with "/new/new/.json", replace it with "/new.json"
         if url.endswith("/new/new/.json"):
             url = url.replace("/new/new/.json", "/new.json")
-        logging.info(f"[Reddit] Attempt {(i+1)}/{nb_subreddit_attempts} Scraping {url} with max oldness of {max_oldness_seconds}")
+        logging.info(f"[Reddit_loewa86] Attempt {(i+1)}/{nb_subreddit_attempts} Scraping {url} with max oldness of {max_oldness_seconds}")
         if "reddit.com" not in url:
             raise ValueError(f"Not a Reddit URL {url}")
         url_parameters = url.split("reddit.com")[1].split("/")[1:]
@@ -791,7 +791,7 @@ async def query(parameters: dict) -> AsyncGenerator[Item, None]:
                 yielded_items += 1
                 result = post_process_item(result)
                 if is_valid_item(result, min_post_length):
-                    logging.info(f"[Reddit] Found Reddit post: {result}")
+                    logging.info(f"[Reddit_loewa86] Found Reddit post: {result}")
                     yield result
                 if yielded_items >= MAXIMUM_ITEMS_TO_COLLECT:
                     break
@@ -803,7 +803,7 @@ async def query(parameters: dict) -> AsyncGenerator[Item, None]:
                 yielded_items += 1
                 result = post_process_item(result)           
                 if is_valid_item(result, min_post_length):
-                    logging.info(f"[Reddit] Found Reddit comment: {result}")
+                    logging.info(f"[Reddit_loewa86] Found Reddit comment: {result}")
                     yield result
                 if yielded_items >= MAXIMUM_ITEMS_TO_COLLECT:
                     break
