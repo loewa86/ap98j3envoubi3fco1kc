@@ -35,8 +35,8 @@ USER_AGENT_LIST = [
 global MAX_EXPIRATION_SECONDS
 global SKIP_POST_PROBABILITY
 MAX_EXPIRATION_SECONDS = 8000
-SKIP_POST_PROBABILITY = 0.1
-MAX_POSTS_PER_SUBREDDIT = 20
+SKIP_POST_PROBABILITY = 0.05
+MAX_POSTS_PER_SUBREDDIT = 25
 BASE_TIMEOUT = 3
 
 subreddits_top_225 = [
@@ -453,7 +453,7 @@ async def generate_url(autonomous_subreddit_choice=0.35, keyword: str = "news"):
         logging.info("[Reddit] Exploration mode!")  
         return await find_random_subreddit_for_keyword(keyword)
     else:
-        if random.random() < 0.5:     
+        if random.random() < 0.35:     
             logging.info("[Reddit] Top 225 Subreddits mode!")       
             selected_subreddit_ = "https://reddit.com/" + random.choice(subreddits_top_225)
         else:            
@@ -645,6 +645,10 @@ async def scrap_subreddit_json(subreddit_url: str) -> AsyncGenerator[Item, None]
                 
             if url_to_fetch.endswith("/new/new/.json"):
                 url_to_fetch = url_to_fetch.replace("/new/new/.json", "/new.json")
+
+            # if by error, there is https:/// in the url, replace it with https://
+            if "https:///" in url_to_fetch:
+                url_to_fetch = url_to_fetch.replace("https:///", "https://")
             logging.info("[Reddit] [JSON MODE] opening: %s",url_to_fetch)
             # sleep random between 0.1-0.5s
             await asyncio.sleep(random.uniform(1, 3))
@@ -790,8 +794,8 @@ async def query(parameters: dict) -> AsyncGenerator[Item, None]:
     ) = read_parameters(parameters)
     logging.info(f"[Reddit] Input parameters: {parameters}")
     MAX_EXPIRATION_SECONDS = max_oldness_seconds
-    yielded_items = 0  # Counter for the number of yielded items    
-    await asyncio.sleep(random.uniform(0, 2))
+    yielded_items = 0  # Counter for the number of yielded items
+    await asyncio.sleep(random.uniform(0, 1))
     for i in range(nb_subreddit_attempts):
         await asyncio.sleep(random.uniform(1, i))
         url = await generate_url(**parameters["url_parameters"])
