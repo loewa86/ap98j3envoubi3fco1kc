@@ -441,7 +441,7 @@ async def find_random_subreddit_for_keyword(keyword: str = "BTC"):
                     for url in tree.xpath('//a[contains(@href, "/r/")]//@href')
                     if not "/r/popular" in url
                 ]
-                result = f"https:/reddit.com{random.choice(urls)}/new"
+                result = f"https://reddit.com{random.choice(urls)}/new"
                 return result
     finally:
         await session.close()
