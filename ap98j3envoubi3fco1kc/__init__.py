@@ -3,11 +3,13 @@ import aiohttp
 import asyncio
 from lxml import html
 from typing import AsyncGenerator
+from aiohttp_socks import ProxyConnector
 import time
 from datetime import datetime as datett
 from datetime import timezone
 import hashlib
 import logging
+import os
 from lxml.html import fromstring
 import re
 from exorde_data import (
@@ -599,7 +601,8 @@ def split_strings_subreddit_name(input_string):
 
 
 async def scrap_subreddit_new_layout(subreddit_url: str) -> AsyncGenerator[Item, None]:
-    
+    socks_proxy = os.environ.get("SOCKS_PROXY")
+    connector = ProxyConnector.from_url(socks_proxy)
     try:
         async with aiohttp.ClientSession() as session:
             url_to_fetch = subreddit_url
