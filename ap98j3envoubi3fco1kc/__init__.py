@@ -429,8 +429,10 @@ async def find_random_subreddit_for_keyword(keyword: str = "BTC"):
     It randomly chooses one of the resulting subreddit.
     """
     logging.info("[Reddit] generating subreddit target URL.")
+    socks_proxy = os.environ.get("SOCKS_PROXY")
+    connector = ProxyConnector.from_url(socks_proxy)
     try:
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(connector=connector) as session:
             async with session.get(
                 f"https://www.reddit.com/search/?q={keyword}&type=sr",
                 headers={"User-Agent": random.choice(USER_AGENT_LIST)},              
@@ -556,8 +558,10 @@ async def scrap_post(url: str) -> AsyncGenerator[Item, None]:
                 yield item
 
     resolvers = {"Listing": listing, "t1": comment, "t3": post, "more": more}
+    socks_proxy = os.environ.get("SOCKS_PROXY")
+    connector = ProxyConnector.from_url(socks_proxy)
     try:
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(connector=connector) as session:
             _url = url + ".json"
             logging.info(f"[Reddit] Scraping - getting {_url}")
             async with session.get(_url, 
@@ -604,7 +608,7 @@ async def scrap_subreddit_new_layout(subreddit_url: str) -> AsyncGenerator[Item,
     socks_proxy = os.environ.get("SOCKS_PROXY")
     connector = ProxyConnector.from_url(socks_proxy)
     try:
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(connector=connector) as session:
             url_to_fetch = subreddit_url
             logging.info("[Reddit] [NEW LAYOUT MODE] Opening: %s",url_to_fetch)
             async with session.get(url_to_fetch, 
@@ -639,8 +643,10 @@ def find_permalinks(data):
             yield from find_permalinks(item)
 
 async def scrap_subreddit_json(subreddit_url: str) -> AsyncGenerator[Item, None]:
+    socks_proxy = os.environ.get("SOCKS_PROXY")
+    connector = ProxyConnector.from_url(socks_proxy)
     try:
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(connector=connector) as session:
             url_to_fetch = subreddit_url
             if random.random() < 0.75:
                 url_to_fetch = url_to_fetch + "/new"
