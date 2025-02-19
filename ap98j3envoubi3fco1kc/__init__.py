@@ -451,7 +451,7 @@ async def find_random_subreddit_for_keyword(keyword: str = "BTC"):
         await session.close()
 
 
-async def generate_url(autonomous_subreddit_choice=0.35, keyword: str = "news"):
+async def generate_url(autonomous_subreddit_choice=0.0, keyword: str = "news"):
     random_value = random.random()
     if random_value < autonomous_subreddit_choice:
         logging.info("[Reddit] Exploration mode!")  
