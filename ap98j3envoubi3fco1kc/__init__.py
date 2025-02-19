@@ -43,60 +43,23 @@ BASE_TIMEOUT = 5
 
 subreddits_top_225 = [
     "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/all",
-    "r/AITAH",
-    "r/AITAH",
     "r/AITAH",
     "r/AmItheAsshole",
-    "r/AmItheAsshole",
+    "r/MurderedByWords",
+    "/WatchPeopleDieInside",
     "r/AlgorandOfficial",
+    "r/PastAndPresentPics",
     "r/almosthomeless",
     "r/altcoin",
     "r/amcstock",
     "r/Anarcho_Capitalism",
     "r/announcements",
-    "r/announcements",
-    "r/announcements",
-    "r/announcements",
     "r/antiwork",
-    "r/AskReddit",
-    "r/AskReddit",
-    "r/AskReddit",
-    "r/AskReddit",
-    "r/AskReddit",
-    "r/AskReddit",
-    "r/AskReddit",
     "r/AskReddit",
     "r/asktrading",
     "r/Banking",
     "r/baseball",
     "r/binance",
-    "r/Bitcoin",
-    "r/Bitcoin",
     "r/Bitcoin",
     "r/bitcoin",
     "r/BitcoinBeginners",
@@ -118,12 +81,6 @@ subreddits_top_225 = [
     "r/Cryptocurrencies",
     "r/Cryptocurrencies",
     "r/CryptoCurrency",
-    "r/CryptoCurrency",
-    "r/CryptoCurrency",
-    "r/CryptoCurrency",
-    "r/CryptoCurrency",
-    "r/CryptoCurrency",
-    "r/CryptoCurrency",
     "r/CryptoCurrencyClassic",
     "r/CryptocurrencyMemes",
     "r/CryptoCurrencyTrading",
@@ -138,23 +95,12 @@ subreddits_top_225 = [
     "r/defi",
     "r/Dividends",
     "r/dogecoin",
-    "r/dogecoin",
-    "r/dogecoin",
-    "r/dogecoin",
-    "r/Economics",
-    "r/Economics",
     "r/Economics",
     "r/eth",
-    "r/ethereum",
-    "r/ethereum",
-    "r/ethereum",
     "r/ethereum",
     "r/ethermining",
     "r/ethfinance",
     "r/ethstaker",
-    "r/ethtrader",
-    "r/ethtrader",
-    "r/ethtrader",
     "r/etoro",
     "r/etoro",
     "r/Europe",
@@ -167,12 +113,9 @@ subreddits_top_225 = [
     "r/Finance",
     "r/Finance",
     "r/FinanceNews",
-    "r/FinanceNews",
-    "r/FinanceNews",
     "r/FinanceStudents",
     "r/FinancialCareers",
     "r/financialindependence",
-    "r/FinancialPlanning",
     "r/financialplanning",
     "r/forex",
     "r/formula1",
@@ -195,21 +138,11 @@ subreddits_top_225 = [
     "r/nanocurrency",
     "r/NFT",
     "r/NoStupidQuestions",
-    "r/NoStupidQuestions",
-    "r/NoStupidQuestions",
-    "r/NoStupidQuestions",
     "r/passive_income",
     "r/pennystocks",
     "r/personalfinance",
     "r/PFtools",
     "r/politics",
-    "r/politics",
-    "r/politics",
-    "r/politics",
-    "r/politics",
-    "r/politics",
-    "r/povertyfinance",
-    "r/povertyfinance",
     "r/povertyfinance",
     "r/realestateinvesting",
     "r/retirement",
@@ -220,48 +153,25 @@ subreddits_top_225 = [
     "r/soccer",
     "r/space",
     "r/sports",
-    "r/sports",
-    "r/sports",
     "r/Stellar",
     "r/stockmarket",
-    "r/stockmarket",
-    "r/Stocks",
-    "r/Stocks",
     "r/Stocks",
     "r/StudentLoans",
     "r/tax",
     "r/technicalraptor",
     "r/technology",
-    "r/technology",
-    "r/technology",
     "r/Tether",
     "r/todayilearned",
-    "r/todayilearned",
-    "r/todayilearned",
-    "r/todayilearned",
-    "r/trading",
-    "r/trading",
     "r/trading",
     "r/tradingreligion",
     "r/unitedkingdom",
     "r/unpopularopinion",
     "r/ValueInvesting",
-    "r/ValueInvesting",
-    "r/ValueInvesting",
     "r/Wallstreet",
-    "r/WallStreetBets",
-    "r/WallStreetBets",
     "r/WallStreetBets",
     "r/WallStreetBetsCrypto",
     "r/Wallstreetsilver",
     "r/WhitePeopleTwitter",
-    "r/WhitePeopleTwitter",
-    "r/WhitePeopleTwitter",
-    "r/WhitePeopleTwitter",
-    "r/worldnews",
-    "r/worldnews",
-    "r/worldnews",
-    "r/worldnews",
     "r/worldnews",
     ###
     "r/BaldursGate3",
@@ -273,17 +183,12 @@ subreddits_top_225 = [
     "r/BaldursGate3",
     "r/teenagers",
     "r/BigBrother",
-    "r/BigBrother",
-    "r/BigBrother",
-    "r/wallstreetbets",
     "r/wallstreetbets",
     "r/namenerds",
     "r/Eldenring",
     "r/Unexpected",
     "r/NonCredibleDefense",
     "r/wallstreetbets",
-    "r/news",
-    "r/news",
     "r/news",
     "r/mildlyinteresting",  
     "r/RandomThoughts",
@@ -451,21 +356,43 @@ async def find_random_subreddit_for_keyword(keyword: str = "BTC"):
         await session.close()
 
 
-async def generate_url(autonomous_subreddit_choice=0.0, keyword: str = "news"):
-    random_value = random.random()
-    if random_value < autonomous_subreddit_choice:
-        logging.info("[Reddit] Exploration mode!")  
+def read_index(file_path):
+    """Читает текущий индекс из файла."""
+    if not os.path.exists(file_path):
+        return 0
+    with open(file_path, "r") as file:
+        return int(file.read().strip())
+
+def write_index(file_path, index):
+    """Записывает текущий индекс в файл."""
+    with open(file_path, "w") as file:
+        file.write(str(index))
+
+async def generate_url(autonomous_subreddit_choice=0.35, keyword: str = "news"):
+    if random.random() < autonomous_subreddit_choice:
+        logging.info("[Reddit] Exploration mode!")
         return await find_random_subreddit_for_keyword(keyword)
     else:
-        if random.random() < 0.35:     
-            logging.info("[Reddit] Top 225 Subreddits mode!")       
-            selected_subreddit_ = "https://reddit.com/" + random.choice(subreddits_top_225)
-        else:            
+        if random.random() < 0.35:
+            logging.info("[Reddit] Top 225 Subreddits mode!")
+            index_file = "/shared_data/top_225_index.txt"  # Общий файл для Docker
+            subreddits = subreddits_top_225
+        else:
             logging.info("[Reddit] Top 1000 Subreddits mode!")
-            selected_subreddit_ = "https://reddit.com/" + random.choice(subreddits_top_1000)
+            index_file = "/shared_data/top_1000_index.txt"  # Общий файл для Docker
+            subreddits = subreddits_top_1000
+
+        # Чтение текущего индекса
+        current_index = read_index(index_file)
         
+        # Получение следующего сабреддита
+        selected_subreddit = subreddits[current_index]
         
-        return selected_subreddit_
+        # Обновление индекса (циклически)
+        next_index = (current_index + 1) % len(subreddits)
+        write_index(index_file, next_index)
+
+        return f"https://reddit.com/{selected_subreddit}"
 
 
 def is_within_timeframe_seconds(input_timestamp, timeframe_sec):
