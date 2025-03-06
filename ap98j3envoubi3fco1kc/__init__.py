@@ -547,8 +547,6 @@ async def scrap_subreddit_new_layout(subreddit_url: str) -> AsyncGenerator[Item,
                     url = post
                     if url.startswith("/r/"):
                         url = "https://www.reddit.com" + post
-                    # await sleep randomly between 1-2s
-                    await asyncio.sleep(random.uniform(1, 2))
                     try:
                         if "https" not in url:
                             url = f"https://reddit.com{url}"
